@@ -1,6 +1,6 @@
 /*
  * File:        ColumnFilterWidgets.js
- * Version:     1.0
+ * Version:     1.0.1
  * Description: Controls for filtering based on unique column values in DataTables
  * Author:      Dylan Kuhn (www.cyberhobo.net)
  * Language:    Javascript
@@ -94,11 +94,15 @@
 		var me = this;
 		var sExcludeList = '';
 		me.$widgetContainer = $( '<div class="column-filter-widgets"></div>' );
+		me.$termContainer = null;
 		me.aoWidgets = [];
 		me.sSeparator = '';
 		if ( 'oColumnFilterWidgets' in oDataTableSettings.oInit ) {
 			if ( 'aiExclude' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
 				sExcludeList = '|' + oDataTableSettings.oInit.oColumnFilterWidgets.aiExclude.join( '|' ) + '|';
+			}
+			if ( 'bGroupTerms' in oDataTableSettings.oInit.oColumnFilterWidgets && oDataTableSettings.oInit.oColumnFilterWidgets.bGroupTerms ) {
+				me.$TermContainer = $( '<div class="column-filter-widget-selected-terms"></div>' );
 			}
 		}
 
@@ -107,10 +111,13 @@
 			var $columnTh = $( oColumn.nTh );
 			var $widgetElem = $( '<div class="column-filter-widget"></div>' );
 			if ( oColumn.bVisible && sExcludeList.indexOf( '|' + i + '|' ) < 0 ) {
-				me.aoWidgets.push( new ColumnFilterWidget( $widgetElem, oDataTableSettings, i ) );
+				me.aoWidgets.push( new ColumnFilterWidget( $widgetElem, oDataTableSettings, i, me ) );
 			}
 			me.$widgetContainer.append( $widgetElem );
 		} );
+		if ( me.$TermContainer ) {
+			me.$widgetContainer.append( me.$TermContainer );
+		}
 		oDataTableSettings.aoDrawCallback.push( {
 			name: 'ColumnFilterWidgets',
 			fn: function() {
@@ -141,8 +148,9 @@
 	* @param {object} $Container The jQuery object that should contain the widget.
 	* @param {object} oSettings The target table's settings.
 	* @param {number} i The numeric index of the target table column.
+	* @param {object} widgets The ColumnFilterWidgets instance the widget is a member of.
 	*/
-	var ColumnFilterWidget = function( $Container, oDataTableSettings, i ) {
+	var ColumnFilterWidget = function( $Container, oDataTableSettings, i, widgets ) {
 		var widget = this;
 		widget.iColumn = i;
 		widget.oColumn = oDataTableSettings.aoColumns[i];
@@ -157,21 +165,24 @@
 		}
 		widget.$Select = $( '<select></select>' ).change( function() {
 			var sSelected = widget.$Select.val(); 
-			var sText;
+			var sText = $( '<div>' + sSelected + '</div>' ).text();
 			var $TermLink = $( '<a class="filter-term" href="#"></a>' ).html( sSelected ).click( function() {
 				// Remove from current filters array
 				widget.asFilters = $.grep( widget.asFilters, function( sFilter ) {
-					return sFilter != sSelected;
+					return sFilter != sText;
 				} );
 				$TermLink.remove();
 				// Add it back to the select
-				sText = $( '<div>' + sSelected + '</div>' ).text();
 				widget.$Select.append( $( '<option></option>' ).attr( 'value', sSelected ).text( sText ) );
 				widget.fnFilter();
 				return false;
 			} );
-			widget.asFilters.push( sSelected );
-			widget.$Select.after( $TermLink );
+			widget.asFilters.push( sText );
+			if ( widgets.$TermContainer ) {
+				widgets.$TermContainer.append( $TermLink );
+			} else {
+				widget.$Select.after( $TermLink );
+			}
 			widget.$Select.children( 'option:selected' ).remove();
 			widget.fnFilter();
 		} );
