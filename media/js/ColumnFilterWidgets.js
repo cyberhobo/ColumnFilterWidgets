@@ -158,9 +158,13 @@
 		widget.oDataTable = oDataTableSettings.oInstance;
 		widget.asFilters = [];
 		widget.sSeparator = '';
+		widget.iMaxSelections = -1;
 		if ( 'oColumnFilterWidgets' in oDataTableSettings.oInit ) {
 			if ( 'sSeparator' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
 				widget.sSeparator = oDataTableSettings.oInit.oColumnFilterWidgets.sSeparator;
+			}
+			if ( 'iMaxSelections' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
+				widget.iMaxSelections = oDataTableSettings.oInit.oColumnFilterWidgets.iMaxSelections;
 			}
 		}
 		widget.$Select = $( '<select></select>' ).change( function() {
@@ -174,6 +178,9 @@
 				$TermLink.remove();
 				// Add it back to the select
 				widget.$Select.append( $( '<option></option>' ).attr( 'value', sSelected ).text( sText ) );
+				if ( widget.iMaxSelections > 0 && widget.iMaxSelections < widget.asFilters.length ) {
+					widget.$Select.show();
+				}
 				widget.fnFilter();
 				return false;
 			} );
@@ -184,6 +191,9 @@
 				widget.$Select.after( $TermLink );
 			}
 			widget.$Select.children( 'option:selected' ).remove();
+			if ( widget.iMaxSelections > 0 && widget.iMaxSelections >= widget.asFilters.length ) {
+				widget.$Select.hide();
+			}
 			widget.fnFilter();
 		} );
 		widget.$Container.append( widget.$Select );
