@@ -170,10 +170,10 @@
 		widget.$Select = $( '<select></select>' ).change( function() {
 			var sSelected = widget.$Select.val(); 
 			var sText = $( '<div>' + sSelected + '</div>' ).text();
-			var $TermLink = $( '<a class="filter-term" href="#"></a>' ).html( sSelected ).click( function() {
+			var $TermLink = $( '<a class="filter-term" href="#"></a>' ).text( sText ).click( function() {
 				// Remove from current filters array
 				widget.asFilters = $.grep( widget.asFilters, function( sFilter ) {
-					return sFilter != sText;
+					return sFilter != sSelected;
 				} );
 				$TermLink.remove();
 				// Add it back to the select
@@ -184,7 +184,7 @@
 				widget.fnFilter();
 				return false;
 			} );
-			widget.asFilters.push( sText );
+			widget.asFilters.push( sSelected );
 			if ( widgets.$TermContainer ) {
 				widgets.$TermContainer.append( $TermLink );
 			} else {
