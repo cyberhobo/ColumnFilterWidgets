@@ -93,8 +93,9 @@
 	var ColumnFilterWidgets = function( oDataTableSettings ) {
 		var me = this;
 		var sExcludeList = '';
-		me.$widgetContainer = $( '<div class="column-filter-widgets"></div>' );
-		me.$termContainer = null;
+		me.$WidgetContainer = $( '<div class="column-filter-widgets"></div>' );
+		me.$MenuContainer = me.$WidgetContainer;
+		me.$TermContainer = null;
 		me.aoWidgets = [];
 		me.sSeparator = '';
 		if ( 'oColumnFilterWidgets' in oDataTableSettings.oInit ) {
@@ -102,21 +103,23 @@
 				sExcludeList = '|' + oDataTableSettings.oInit.oColumnFilterWidgets.aiExclude.join( '|' ) + '|';
 			}
 			if ( 'bGroupTerms' in oDataTableSettings.oInit.oColumnFilterWidgets && oDataTableSettings.oInit.oColumnFilterWidgets.bGroupTerms ) {
-				me.$TermContainer = $( '<div class="column-filter-widget-selected-terms"></div>' );
+				me.$MenuContainer = $( '<div class="column-filter-widget-menus"></div>' );
+				me.$TermContainer = $( '<div class="column-filter-widget-selected-terms"></div>' ).hide();
 			}
 		}
 
 		// Add a widget for each visible and filtered column
 		$.each( oDataTableSettings.aoColumns, function ( i, oColumn ) {
 			var $columnTh = $( oColumn.nTh );
-			var $widgetElem = $( '<div class="column-filter-widget"></div>' );
+			var $WidgetElem = $( '<div class="column-filter-widget"></div>' );
 			if ( oColumn.bVisible && sExcludeList.indexOf( '|' + i + '|' ) < 0 ) {
-				me.aoWidgets.push( new ColumnFilterWidget( $widgetElem, oDataTableSettings, i, me ) );
+				me.aoWidgets.push( new ColumnFilterWidget( $WidgetElem, oDataTableSettings, i, me ) );
 			}
-			me.$widgetContainer.append( $widgetElem );
+			me.$MenuContainer.append( $WidgetElem );
 		} );
 		if ( me.$TermContainer ) {
-			me.$widgetContainer.append( me.$TermContainer );
+			me.$WidgetContainer.append( me.$MenuContainer );
+			me.$WidgetContainer.append( me.$TermContainer );
 		}
 		oDataTableSettings.aoDrawCallback.push( {
 			name: 'ColumnFilterWidgets',
@@ -137,7 +140,7 @@
 	* @return {Node} The container node.
 	*/
 	ColumnFilterWidgets.prototype.getContainer = function() {
-		return this.$widgetContainer.get( 0 );
+		return this.$WidgetContainer.get( 0 );
 	}
 
 	/**
@@ -176,23 +179,27 @@
 					return sFilter != sSelected;
 				} );
 				$TermLink.remove();
+				if ( widgets.$TermContainer && 0 === widgets.$TermContainer.find( '.filter-term' ).length ) {
+					widgets.$TermContainer.hide();
+				}
 				// Add it back to the select
 				widget.$Select.append( $( '<option></option>' ).attr( 'value', sSelected ).text( sText ) );
-				if ( widget.iMaxSelections > 0 && widget.iMaxSelections < widget.asFilters.length ) {
-					widget.$Select.show();
+				if ( widget.iMaxSelections > 0 && widget.iMaxSelections > widget.asFilters.length ) {
+					widget.$Select.attr( 'disabled', false );
 				}
 				widget.fnFilter();
 				return false;
 			} );
 			widget.asFilters.push( sSelected );
 			if ( widgets.$TermContainer ) {
-				widgets.$TermContainer.append( $TermLink );
+				widgets.$TermContainer.show();
+				widgets.$TermContainer.prepend( $TermLink );
 			} else {
 				widget.$Select.after( $TermLink );
 			}
 			widget.$Select.children( 'option:selected' ).remove();
-			if ( widget.iMaxSelections > 0 && widget.iMaxSelections >= widget.asFilters.length ) {
-				widget.$Select.hide();
+			if ( widget.iMaxSelections > 0 && widget.iMaxSelections <= widget.asFilters.length ) {
+				widget.$Select.attr( 'disabled', true );
 			}
 			widget.fnFilter();
 		} );
@@ -251,11 +258,11 @@
 				} );
 			} );
 			if ( iDistinctOptions > 1 ) {
-				// Display the menu if it was hidden
-				widget.$Select.show();
+				// Enable the menu 
+				widget.$Select.attr( 'disabled', false );
 			} else {
-				// One option is not a useful menu, hide it
-				widget.$Select.hide();
+				// One option is not a useful menu, enable it
+				widget.$Select.attr( 'disabled', true );
 			}
 		}
 	};
