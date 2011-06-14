@@ -171,9 +171,13 @@
 			}
 		}
 		widget.$Select = $( '<select></select>' ).change( function() {
-			var sSelected = widget.$Select.val(); 
-			var sText = $( '<div>' + sSelected + '</div>' ).text();
-			var $TermLink = $( '<a class="filter-term" href="#"></a>' ).text( sText ).click( function() {
+			var sSelected = widget.$Select.val(), sText, $TermLink, $SelectedOption; 
+			if ( '' === sSelected ) {
+				// The blank option is a default, not a filter, and is re-selected after filtering
+				return;
+			}
+			sText = $( '<div>' + sSelected + '</div>' ).text();
+			$TermLink = $( '<a class="filter-term" href="#"></a>' ).text( sText ).click( function() {
 				// Remove from current filters array
 				widget.asFilters = $.grep( widget.asFilters, function( sFilter ) {
 					return sFilter != sSelected;
@@ -197,7 +201,9 @@
 			} else {
 				widget.$Select.after( $TermLink );
 			}
-			widget.$Select.children( 'option:selected' ).remove();
+			$SelectedOption = widget.$Select.children( 'option:selected' );
+			widget.$Select.val( '' );
+			$SelectedOption.remove();
 			if ( widget.iMaxSelections > 0 && widget.iMaxSelections <= widget.asFilters.length ) {
 				widget.$Select.attr( 'disabled', true );
 			}
