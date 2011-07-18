@@ -246,28 +246,33 @@
 	ColumnFilterWidget.prototype.fnDraw = function() {
 		var widget = this;
 		var oDistinctOptions = {};
-		var iDistinctOptions = 0;
+		var aDistinctOptions = [];
 		var aData;
 		if ( widget.asFilters.length === 0 ) {
+			// Find distinct column values
 			aData = widget.oDataTable.fnGetColumnData( widget.iColumn );
-			widget.$Select.empty().append( $( '<option></option>' ).attr( 'value', '' ).text( widget.oColumn.sTitle ) );
 			$.each( aData, function( i, sValue ) {
 				var asValues = widget.sSeparator ? sValue.split( new RegExp( widget.sSeparator ) ) : [ sValue ];
 				$.each( asValues, function( j, sOption ) {
-					var sText; 
 					if ( !oDistinctOptions.hasOwnProperty( sOption ) ) {
-						sText = $( '<div>' + sOption + '</div>' ).text();
-						widget.$Select.append( $( '<option></option>' ).attr( 'value', sOption ).text( sText ) );
 						oDistinctOptions[sOption] = true;
-						iDistinctOptions++;
+						aDistinctOptions.push( sOption );
 					}
 				} );
 			} );
-			if ( iDistinctOptions > 1 ) {
+			// Build the menu
+			widget.$Select.empty().append( $( '<option></option>' ).attr( 'value', '' ).text( widget.oColumn.sTitle ) );
+			aDistinctOptions.sort();
+			$.each( aDistinctOptions, function( i, sOption ) {
+				var sText; 
+				sText = $( '<div>' + sOption + '</div>' ).text();
+				widget.$Select.append( $( '<option></option>' ).attr( 'value', sOption ).text( sText ) );
+			} );
+			if ( aDistinctOptions.length > 1 ) {
 				// Enable the menu 
 				widget.$Select.attr( 'disabled', false );
 			} else {
-				// One option is not a useful menu, enable it
+				// One option is not a useful menu, disable it
 				widget.$Select.attr( 'disabled', true );
 			}
 		}
