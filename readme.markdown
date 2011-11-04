@@ -45,6 +45,13 @@ The possible options are:
  * `sSeparator` - enable parsing of column contents into multiple terms separated by this string.
  * `iMaxSelections` - allow at most this number of selections from each column filter widget.
 
+Contributing
+============
+
+[Github](https://github.com/cyberhobo/ColumnFilterWidgets) offers ways to contribute code, write documentation, submit issues, suggest features, etc. Go nuts!
+
+[Donations](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QP5Q99BW2B3M2) are always encouraging.
+
 License
 =======
 
