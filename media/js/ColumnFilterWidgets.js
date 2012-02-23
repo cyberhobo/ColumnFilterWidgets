@@ -112,7 +112,7 @@
 		$.each( oDataTableSettings.aoColumns, function ( i, oColumn ) {
 			var $columnTh = $( oColumn.nTh );
 			var $WidgetElem = $( '<div class="column-filter-widget"></div>' );
-			if ( oColumn.bVisible && sExcludeList.indexOf( '|' + i + '|' ) < 0 ) {
+			if ( sExcludeList.indexOf( '|' + i + '|' ) < 0 ) {
 				me.aoWidgets.push( new ColumnFilterWidget( $WidgetElem, oDataTableSettings, i, me ) );
 			}
 			me.$MenuContainer.append( $WidgetElem );
