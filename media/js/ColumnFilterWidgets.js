@@ -177,23 +177,26 @@
 				return;
 			}
 			sText = $( '<div>' + sSelected + '</div>' ).text();
-			$TermLink = $( '<a class="filter-term" href="#"></a>' ).text( sText ).click( function() {
-				// Remove from current filters array
-				widget.asFilters = $.grep( widget.asFilters, function( sFilter ) {
-					return sFilter != sSelected;
+			$TermLink = $( '<a class="filter-term" href="#"></a>' )
+				.addClass( 'filter-term-' + sText.toLowerCase().replace( /\W/g, '' ) )
+				.text( sText )
+				.click( function() {
+					// Remove from current filters array
+					widget.asFilters = $.grep( widget.asFilters, function( sFilter ) {
+						return sFilter != sSelected;
+					} );
+					$TermLink.remove();
+					if ( widgets.$TermContainer && 0 === widgets.$TermContainer.find( '.filter-term' ).length ) {
+						widgets.$TermContainer.hide();
+					}
+					// Add it back to the select
+					widget.$Select.append( $( '<option></option>' ).attr( 'value', sSelected ).text( sText ) );
+					if ( widget.iMaxSelections > 0 && widget.iMaxSelections > widget.asFilters.length ) {
+						widget.$Select.attr( 'disabled', false );
+					}
+					widget.fnFilter();
+					return false;
 				} );
-				$TermLink.remove();
-				if ( widgets.$TermContainer && 0 === widgets.$TermContainer.find( '.filter-term' ).length ) {
-					widgets.$TermContainer.hide();
-				}
-				// Add it back to the select
-				widget.$Select.append( $( '<option></option>' ).attr( 'value', sSelected ).text( sText ) );
-				if ( widget.iMaxSelections > 0 && widget.iMaxSelections > widget.asFilters.length ) {
-					widget.$Select.attr( 'disabled', false );
-				}
-				widget.fnFilter();
-				return false;
-			} );
 			widget.asFilters.push( sSelected );
 			if ( widgets.$TermContainer ) {
 				widgets.$TermContainer.show();
