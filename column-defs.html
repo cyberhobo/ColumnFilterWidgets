@@ -4,7 +4,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<link rel="shortcut icon" type="image/ico" href="http://www.sprymedia.co.uk/media/images/favicon.ico">
 		
-		<title>ColumnFilterWidgets</title>
+		<title>ColumnFilterWidgets example - exclude columns</title>
 		<style type="text/css" title="currentStyle">
 			@import "../../media/css/demo_page.css";
 			@import "../../media/css/demo_table.css";
@@ -16,22 +16,29 @@
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
 				$('#example').dataTable( {
-					"sDom": 'W<"clear">lfrtip'
+					"sDom": 'W<"clear">lfrtip',
+               "oColumnFilterWidgets": {
+                  "aoColumnDefs": [
+                     { "bSort": false, "sSeparator": " / ", "aiTargets": [ 2 ] },
+                     { "fnSort": function( a, b ) { return a-b; }, "aiTargets": [ 3 ] }
+                  ]
+               }
 				} );
 			} );
 		</script>
+
 	</head>
 	<body id="dt_example">
 		<div id="container">
 			<div class="full_width big">
-				ColumnFilterWidgets
+				ColumnFilterWidgets - exclude columns example
 			</div>
 			
 			<h1>DataTables</h1>
 			<p>This page requires the <a href="https://github.com/DataTables/DataTables">DataTables jQuery plugin</a>. Put the <code>ColumnFilterWidgets</code> directory under <code>DataTables/extras/</code>.</p>
 
 			<h1>Preamble</h1>
-			<p>ColumnFilterWidgets is a plug-in for DataTables which creates a menu of unique values for specified table columns, and allows the table to be filtered by one or more of those values. Select a value from a menu to add a filter, and filter tag appears below the menu. Click the tag to remove the filter again.</p>
+			<p>To specify options for individual columns, a minimal implementation inspired by the <a href="http://datatables.net/usage/columns">DataTables aoColumnDefs</a> allows some options, including widget sorting, to be overridden for an individual column. In this example the Platforms column alone uses a forward slash separator and is not sorted, while versions are sorted numerically.</p>
 			
 			<h1>Live example</h1>
 			<form>
@@ -474,12 +481,20 @@
 			
 			
 			<h1>Initialisation code</h1>
-			<pre>$(document).ready( function () {
-	$('#example').dataTable( {
-		"sDom": 'W&lt;"clear"&gt;lfrtip'
+         <pre>
+$(document).ready( function () {
+	$(&#39;#example&#39;).dataTable( {
+		&quot;sDom&quot;: &#39;W&lt;&quot;clear&quot;&gt;lfrtip&#39;,
+		oColumnFilterWidgets: {
+			aoColumnDefs: [
+				{ bSort: false, aiTargets: [ 2 ] },
+				{ fnSort: function( a, b ) { return a-b; }, aiTargets: [ 3 ] }
+			]
+		}
 	} );
-} );</pre>
-			
+} );
+         </pre>
+
 			<div id="footer" style="text-align:center;">
 				<span style="font-size:10px;">
 					ColumnFilterWidgets &copy; Dylan Kuhn 2011, DataTables &copy; Allan Jardine 2009-2010

@@ -154,13 +154,14 @@
 	* @param {object} widgets The ColumnFilterWidgets instance the widget is a member of.
 	*/
 	var ColumnFilterWidget = function( $Container, oDataTableSettings, i, widgets ) {
-		var widget = this;
+		var widget = this, sTargetList;
 		widget.iColumn = i;
 		widget.oColumn = oDataTableSettings.aoColumns[i];
 		widget.$Container = $Container;
 		widget.oDataTable = oDataTableSettings.oInstance;
 		widget.asFilters = [];
 		widget.sSeparator = '';
+		widget.bSort = true;
 		widget.iMaxSelections = -1;
 		if ( 'oColumnFilterWidgets' in oDataTableSettings.oInit ) {
 			if ( 'sSeparator' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
@@ -168,6 +169,16 @@
 			}
 			if ( 'iMaxSelections' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
 				widget.iMaxSelections = oDataTableSettings.oInit.oColumnFilterWidgets.iMaxSelections;
+			}
+			if ( 'aoColumnDefs' in oDataTableSettings.oInit.oColumnFilterWidgets ) {
+				$.each( oDataTableSettings.oInit.oColumnFilterWidgets.aoColumnDefs, function( iIndex, oColumnDef ) {
+					var sTargetList = '|' + oColumnDef.aiTargets.join( '|' ) + '|';
+					if ( sTargetList.indexOf( '|' + i + '|' ) >= 0 ) {
+						$.each( oColumnDef, function( sDef, oDef ) {
+							widget[sDef] = oDef;
+						} );
+					}
+				} );
 			}
 		}
 		widget.$Select = $( '<select></select>' ).change( function() {
@@ -265,7 +276,13 @@
 			} );
 			// Build the menu
 			widget.$Select.empty().append( $( '<option></option>' ).attr( 'value', '' ).text( widget.oColumn.sTitle ) );
-			aDistinctOptions.sort();
+			if ( widget.bSort ) { 
+				if ( widget.hasOwnProperty( 'fnSort' ) ) {
+					aDistinctOptions.sort( widget.fnSort );
+				} else {
+					aDistinctOptions.sort();
+				}
+			}
 			$.each( aDistinctOptions, function( i, sOption ) {
 				var sText; 
 				sText = $( '<div>' + sOption + '</div>' ).text();
