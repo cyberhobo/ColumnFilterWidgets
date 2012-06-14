@@ -32,9 +32,14 @@ Options are specified as a DataTables option, in an object called `oColumnFilter
 		sDom: 'Wlfriptip',
 		sPaginationType: 'full_numbers',
 		oColumnFilterWidgets: {
-			aiExclude: [ 0, 1, 6, 7, 8 ],
+			aiExclude: [ 0, 6 ],
 			sSeparator: ',  ',
-			bGroupTerms: true
+			bGroupTerms: true,
+			aoColumnDefs: [
+				{ bSort: false, sSeparator: ' / ', aiTargets: [ 2 ] },
+				{ fnSort: function( a, b ) { return a-b; }, aiTargets: [ 3 ] }
+			]
+				
 		}
 	} );
 	
