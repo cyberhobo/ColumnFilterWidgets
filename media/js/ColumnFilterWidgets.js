@@ -1,6 +1,6 @@
 /*
  * File:        ColumnFilterWidgets.js
- * Version:     1.0.2
+ * Version:     1.0.3
  * Description: Controls for filtering based on unique column values in DataTables
  * Author:      Dylan Kuhn (www.cyberhobo.net)
  * Language:    Javascript
