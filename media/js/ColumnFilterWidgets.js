@@ -53,7 +53,7 @@
 		var asResultData = new Array();
 		
 		for (var i=0,c=aiRows.length; i<c; i++) {
-			iRow = aiRows[i];
+			var iRow = aiRows[i];
 			var sValue = this.fnGetData(iRow, iColumn);
 			
 			// ignore empty values?
