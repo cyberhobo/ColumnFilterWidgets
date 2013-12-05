@@ -4,6 +4,8 @@ Widgets are grouped in a layout element, independent of source columns.
 
 Multiple selections can be made for a column, and other widgets adjust to reflect the results.
 
+Multiple values can be parsed from a single table cell using a delimiter (like a comma).
+
 Selections can be grouped with the source dropdown, or all together in a common layout element.
 
 Selections can be removed individually.
