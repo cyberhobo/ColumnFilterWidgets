@@ -1,4 +1,14 @@
-This is an add-on for the DataTables plugin (v1.7.x) for jQuery that creates filtering widgets based on the data in table columns.
+This is an add-on for the DataTables plugin (v1.7.x) for jQuery that creates filtering widgets based on the data in table columns. 
+
+Widgets are grouped in a layout, independent of source columns. 
+
+Multiple selections can be made for a column, and other widgets adjust to reflect the results.
+
+Selections can be grouped with the source dropdown, or all together in a common layout element.
+
+Selections can be removed individually.
+
+Examples: http://www.datatables.net/extras/thirdparty/ColumnFilterWidgets/DataTables/extras/ColumnFilterWidgets/
 
 Working with DataTables
 =======================
@@ -16,8 +26,6 @@ The included examples will only work within the DataTables source tree. Here's a
 	Cloning into ColumnFilterWidgets...
 
 For DataTables usage, please refer to the DataTables web-pages: http://www.datatables.net
-
-ColumnFilterWidgets examples are also available there: http://www.datatables.net/extras/thirdparty/ColumnFilterWidgets/DataTables/extras/ColumnFilterWidgets/
 
 The ColumnFilterWidgets source can be found in the media/js/ directory of this source tree.
 
