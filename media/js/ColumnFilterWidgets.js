@@ -179,7 +179,7 @@
 				} );
 			}
 		}
-		widget.$Select = $( '<select></select>' ).change( function() {
+		widget.$Select = $( '<select></select>' ).addClass('widget-' + widget.iColumn).change( function() {
 			var sSelected = widget.$Select.val(), sText, $TermLink, $SelectedOption; 
 			if ( '' === sSelected ) {
 				// The blank option is a default, not a filter, and is re-selected after filtering
