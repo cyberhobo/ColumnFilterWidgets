@@ -203,6 +203,9 @@
 					if ( widget.iMaxSelections > 0 && widget.iMaxSelections > widget.asFilters.length ) {
 						widget.$Select.attr( 'disabled', false );
 					}
+					if ( widget.bSort ) {
+						widget.fnSortOptions();
+					}
 					widget.fnFilter();
 					return false;
 				} );
@@ -250,6 +253,34 @@
 	};
 
 	/**
+	* Sort the widget menu options, using a custom function if one was supplied.
+	*
+	* @method fnSortOptions
+	*/
+	ColumnFilterWidget.prototype.fnSortOptions = function() {
+		var widget = this,
+			$options = widget.$Select.find( 'option' ).slice( 1 );
+
+		function fnSort( a, b ) {
+			var a_text = $( a ).text(),
+				b_text = $( b ).text();
+
+			if ( widget.hasOwnProperty( 'fnSort' ) ) {
+				return widget.fnSort( a_text, b_text );
+			} else if ( a_text < b_text ) {
+				return -1;
+			} else if ( a_text == b_text ) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+
+		$options.sort( fnSort );
+		widget.$Select.append( $options );
+	};
+
+	/**
 	* On each table draw, update filter menu items as needed. This allows any process to
 	* update the table's column visiblity and menus will still be accurate.
 	* 
@@ -274,19 +305,15 @@
 			} );
 			// Build the menu
 			widget.$Select.empty().append( $( '<option></option>' ).attr( 'value', '' ).text( widget.oColumn.sTitle ) );
-			if ( widget.bSort ) { 
-				if ( widget.hasOwnProperty( 'fnSort' ) ) {
-					aDistinctOptions.sort( widget.fnSort );
-				} else {
-					aDistinctOptions.sort();
-				}
-			}
 			$.each( aDistinctOptions, function( i, sOption ) {
 				var sText; 
 				sText = $( '<div>' + sOption + '</div>' ).text();
 				widget.$Select.append( $( '<option></option>' ).attr( 'value', sOption ).text( sText ) );
 			} );
 			if ( aDistinctOptions.length > 1 ) {
+				if ( widget.bSort ) { 
+					widget.fnSortOptions();
+				}
 				// Enable the menu 
 				widget.$Select.attr( 'disabled', false );
 			} else {

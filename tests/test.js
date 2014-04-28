@@ -368,3 +368,41 @@ test( 'limited selections', function() {
 	);
 
 } );
+
+test( 'menu sort', function() {
+	var $fixture = $( '#qunit-fixture' ),
+		$widgets; 
+
+	$('#example').dataTable( {
+		"sDom": 'W<"clear">lfrtip',
+		"oColumnFilterWidgets": {
+			"bSort": true
+		}
+	} );
+
+	$widgets = $fixture.find( '.column-filter-widget' );
+
+	function testMenuOrder() {
+		$widgets.each( function( i, widget ) {
+			var $options = $( widget ).find( 'option' ),
+				last_text = null;
+
+			$options.each( function( j, option ) {
+				var this_text = $( option ).text();
+				if ( j > 1 ) {
+					ok( last_text < this_text, 'Menu option ' + i + ',' + j + ' ' + last_text + ':' + this_text + ' is in order.' );
+				}
+				last_text = this_text;
+			} );
+		} );
+	}
+
+	testMenuOrder();
+
+	// Select two terms, then remove one
+	$widgets.eq( 0 ).find( 'select' ).val( 'Misc' ).trigger( 'change' );
+	$widgets.eq( 0 ).find( 'select' ).val( 'KHTML' ).trigger( 'change' );
+	$widgets.eq( 0 ).find( '.filter-term-misc' ).click();
+
+	testMenuOrder();
+} );
