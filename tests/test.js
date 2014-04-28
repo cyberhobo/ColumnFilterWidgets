@@ -115,7 +115,7 @@ test( 'basic interactions', function() {
 		'Now a full page of 10 rows are loaded.'
 	);
 
-	$( '#example_filter input:text' ).val( 'text' ).trigger( 'keyup' );
+	$( '#example_filter input[type=search]' ).val( 'text' ).trigger( 'keyup' );
 	equal(
 		$fixture.find( 'tbody tr' ).length,
 		2,
