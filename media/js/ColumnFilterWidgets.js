@@ -1,6 +1,6 @@
 /*
  * File:        ColumnFilterWidgets.js
- * Version:     1.0.3
+ * Version:     1.0.3-newapi
  * Description: Controls for filtering based on unique column values in DataTables
  * Author:      Dylan Kuhn (www.cyberhobo.net)
  * Language:    Javascript
@@ -13,6 +13,8 @@
  * BSD style license, available at:
  *   http://datatables.net/license_gpl2
  *   http://datatables.net/license_bsd
+ *
+ * Quickly hacked to use new DataTables 1.10 API for extracting unique keys from columns by abs@absd.org
  */
 
 (function($) {
@@ -293,7 +295,12 @@
 		var aData;
 		if ( widget.asFilters.length === 0 ) {
 			// Find distinct column values
-			aData = widget.oDataTable.fnGetColumnData( widget.iColumn );
+            // Changes in v1.10 make fnGetColumnData() extremely slow, plus ... new api
+            if( widget.oDataTable.fnVersionCheck( '1.10.0' )) {
+                aData = widget.oDataTable.api().column( widget.iColumn, { search: 'applied' } ).data().sort().unique();
+            } else {
+			    aData = widget.oDataTable.fnGetColumnData( widget.iColumn );
+            }
 			$.each( aData, function( i, sValue ) {
 				var asValues = widget.sSeparator ? sValue.split( new RegExp( widget.sSeparator ) ) : [ sValue ];
 				$.each( asValues, function( j, sOption ) {
