@@ -1,4 +1,4 @@
-This is an add-on for the DataTables plugin (v1.7.x) for jQuery that creates filtering widgets based on the data in table columns. 
+This is an add-on for the DataTables plugin for jQuery that creates filtering widgets based on the data in table columns. 
 
 Widgets are grouped in a layout element, independent of source columns. 
 
