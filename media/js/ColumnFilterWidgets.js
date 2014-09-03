@@ -297,7 +297,7 @@
 			// Find distinct column values
             // Changes in v1.10 make fnGetColumnData() extremely slow, plus ... new api
             if( widget.oDataTable.fnVersionCheck( '1.10.0' )) {
-                aData = widget.oDataTable.api().column( widget.iColumn ).data().sort().unique();
+                aData = widget.oDataTable.api().column( widget.iColumn, { search: 'applied' } ).data().sort().unique();
             } else {
 			    aData = widget.oDataTable.fnGetColumnData( widget.iColumn );
             }
