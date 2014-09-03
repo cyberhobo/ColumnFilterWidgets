@@ -6,8 +6,8 @@
 		
 		<title>ColumnFilterWidgets example - exclude columns</title>
 		<style type="text/css" title="currentStyle">
-			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
+			@import "../../media/css/jquery.dataTables.css";
+			@import "../../examples/resources/demo.css";
 			@import "media/css/ColumnFilterWidgets.css";
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
@@ -24,8 +24,8 @@
 			} );
 		</script>
 	</head>
-	<body id="dt_example">
-		<div id="container">
+	<body class="dt_example">
+		<div class="container">
 			<div class="full_width big">
 				ColumnFilterWidgets - exclude columns example
 			</div>
@@ -37,7 +37,7 @@
 			<p>To prevent a widget from being generated for a column or columns, set the <code>oColumnFilterWidgets.aiExclude</code> option to an array of column indexes to exclude. In this example the Browsers column is excluded.</p>
 			
 			<h1>Live example</h1>
-			<form>
+			<form method="post" action="">
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>

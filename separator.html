@@ -6,8 +6,8 @@
 		
 		<title>ColumnFilterWidgets example - separated values example</title>
 		<style type="text/css" title="currentStyle">
-			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
+			@import "../../media/css/jquery.dataTables.css";
+			@import "../../examples/resources/demo.css";
 			@import "media/css/ColumnFilterWidgets.css";
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
@@ -24,8 +24,8 @@
 			} );
 		</script>
 	</head>
-	<body id="dt_example">
-		<div id="container">
+	<body class="dt_example">
+		<div class="container">
 			<div class="full_width big">
 				ColumnFilterWidgets - separated values example
 			</div>
@@ -37,7 +37,7 @@
 			<p>If a table cell lists several values, by default the entire list will be used in the filter widget. By setting the <code>oColumnFilterWidgets.sSeparator</code> option, lists of values in a cell will be split into individual filters. The separator can be a string (maybe a comma), or a regular expression. This example separates values on a sequence of one or more spaces around a forward slash.</p>
 			
 			<h1>Live example</h1>
-			<form>
+			<form method="post" action="">
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>

@@ -6,8 +6,8 @@
 		
 		<title>ColumnFilterWidgets example - grouped terms</title>
 		<style type="text/css" title="currentStyle">
-			@import "../../media/css/demo_page.css";
-			@import "../../media/css/demo_table.css";
+			@import "../../media/css/jquery.dataTables.css";
+			@import "../../examples/resources/demo.css";
 			@import "media/css/ColumnFilterWidgets.css";
 		</style>
 		<script type="text/javascript" charset="utf-8" src="../../media/js/jquery.js"></script>
@@ -24,8 +24,8 @@
 			} );
 		</script>
 	</head>
-	<body id="dt_example">
-		<div id="container">
+	<body class="dt_example">
+		<div class="container">
 			<div class="full_width big">
 				ColumnFilterWidgets - grouped terms example
 			</div>
@@ -37,7 +37,7 @@
 			<p>By default, selected terms appear after the dropdown they were selected from. By setting the <code>oColumnFilterWidgets.bGroupTerms</code> option, selected terms will all be added together in a div with class "column-filter-widget-selected-terms" placed after the div containing the dropdowns.</p>
 			
 			<h1>Live example</h1>
-			<form>
+			<form method="post" action="">
 			<div id="demo">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
