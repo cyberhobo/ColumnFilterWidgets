@@ -10,7 +10,7 @@ Selections can be grouped with the source dropdown, or all together in a common 
 
 Selections can be removed individually.
 
-Examples: http://www.datatables.net/extras/thirdparty/ColumnFilterWidgets/DataTables/extras/ColumnFilterWidgets/
+Examples: http://cyberhobo.github.io/column-filter-widgets-examples/extras/ColumnFilterWidgets/index.html
 
 Working with DataTables
 =======================
@@ -24,6 +24,7 @@ The included examples will only work within the DataTables source tree. Here's a
 	...
 	$ cd DataTables
 	$ mkdir extras
+	$ cd extras
 	$ git clone git@github.com:cyberhobo/ColumnFilterWidgets.git
 	Cloning into ColumnFilterWidgets...
 
